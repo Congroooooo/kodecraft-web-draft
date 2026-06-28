@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --rgb-text: 240, 245, 255;
+  --rgb-text-alt: 148, 163, 184;
+  --rgb-brand-1: 74, 222, 128;
+  --rgb-brand-2: 16, 185, 129;
+  --rgb-brand-3: 20, 30, 48;
+  --rgb-brand-4: 30, 41, 59;
+  --rgb-brand-5: 34, 197, 94;
+  --color-bg: #0a0f1a;
+  --color-text: rgb(var(--rgb-text));
+  --color-text-alt: rgb(var(--rgb-text-alt));
+  --color-brand-1: rgb(var(--rgb-brand-1));
+  --color-brand-2: rgb(var(--rgb-brand-2));
+  --color-brand-3: rgb(var(--rgb-brand-3));
+  --color-brand-4: rgb(var(--rgb-brand-4));
+  --color-brand-5: rgb(var(--rgb-brand-5));
+  --font-heading: 'Geist', system-ui, sans-serif;
+  --font-body: 'Geist', system-ui, sans-serif;
+  --page-gutter: clamp(1.35rem, 4.3vw, 5rem);
+  --container: 86rem;
+  --header-height: clamp(4.8rem, 7vw, 6.4rem);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-bg);
+  scroll-behavior: smooth;
+}
+
+/* Offset anchor jumps so the fixed header never covers a section heading. */
+section[id] {
+  scroll-margin-top: var(--header-height);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background:
+    radial-gradient(circle at 80% 0%, rgba(74, 222, 128, 0.08), transparent 28rem),
+    var(--color-bg);
+  margin: 0;
+  min-width: 320px;
+}
+
+::selection {
+  background: var(--color-brand-1);
+  color: #07100b;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-block: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-1);
+  outline-offset: 4px;
+}
+
+#root {
+  isolation: isolate;
+  min-height: 100svh;
+}
