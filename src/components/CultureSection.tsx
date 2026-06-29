@@ -141,6 +141,11 @@ export function CultureSection() {
           KodeCraft is built by people who care about the work and the life around it. The same team that ships agent-native systems also makes room for workations, tech talks, team building, celebrations, and the ordinary moments that keep good people close.
         </p>
       </div>
+
+      <a className="button button-primary culture-cta" data-reveal href="/events">
+        View More Moments
+        <span aria-hidden="true">-&gt;</span>
+      </a>
     </section>
   )
 }

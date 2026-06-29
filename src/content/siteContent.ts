@@ -1,9 +1,183 @@
 export const navigationLinks = [
-  { href: '#work', label: 'Work' },
-  { href: '#stack', label: 'Stack' },
-  { href: '#culture', label: 'Culture' },
-  { href: '#blog', label: 'Blog' },
+  { href: '/', label: 'Homepage' },
+  {
+    href: '/moments',
+    label: 'Moments',
+    children: [
+      { href: '/events', label: 'Events' },
+      { href: '/tech-talks', label: 'Tech Talks' },
+      { href: '/blog', label: 'Blog' },
+    ],
+  },
+  { href: '/our-team', label: 'Our Team' },
   { href: '#contact', label: 'Contact' },
+]
+
+export const pageContent = {
+  '/events': {
+    eyebrow: 'Moments / Events',
+    title: 'Events where builders meet.',
+    description:
+      'A dedicated space for KodeCraft gatherings, community sessions, and team events. Content and event listings can land here next.',
+  },
+  '/tech-talks': {
+    eyebrow: 'Moments / Tech Talks',
+    title: 'Technical talks from the team.',
+    description:
+      'Deep dives, internal demos, architecture notes, and engineering sessions will live here.',
+  },
+  '/blog': {
+    eyebrow: 'Moments / Blog',
+    title: 'Notes from engineers building real systems.',
+    description:
+      'Long-form engineering posts, product lessons, infrastructure decisions, and culture stories will live here.',
+  },
+}
+
+export const faqItems = [
+  {
+    question: 'Do I need Rust experience to apply?',
+    answer:
+      "Strong Rust experience helps, but it's not a hard requirement. We care more about systems thinking, engineering judgment, and the ability to go deep on hard problems. If you've built serious software in any systems language and want to work in Rust, we'll invest in getting you there.",
+  },
+  {
+    question: "What's the tech stack?",
+    answer:
+      "Rust and Axum on the backend. MCP servers for agent tool interfaces. PostgreSQL, TigerBeetle, and pgvector for data. HashiCorp stack (Terraform, Nomad, Vault, Consul) for infrastructure. SolidJS or React on the frontend. Claude and OpenAl for agent capabilities. You'll work across the stack depending on the problem.",
+  },
+  {
+    question: 'What does day-to-day work look like?',
+    answer:
+      "You'll spend most of your time writing code-Rust services, MCP servers, agent orchestration, frontend features. We do architecture discussions on whiteboards, pair program on hard problems, and ship to production continuously. No standups that could've been a message. No Jira ticket factories.",
+  },
+  {
+    question: 'Why Rust instead of Go or Python?',
+    answer:
+      'Agent workloads are bursty and unpredictable-an agent might fire off hundreds of tool calls in seconds. Rust gives us memory safety without garbage collection pauses, predictable latency, and fearless concurrency. If you want to write Rust that actually runs in production at scale, this is the place.',
+  },
+  {
+    question: 'Where is the team?',
+    answer:
+      "Our office is in Tayabas, Philippines. We work together in-person-whiteboards, pair programming, and real-time architecture discussions. The energy of being in the same room is a core part of how we build. If you're in the area or willing to relocate, we'd love to talk.",
+  },
+  {
+    question: "What's the interview process?",
+    answer:
+      "A technical conversation about systems you've built, a small take-home focused on Rust or systems design (not LeetCode), and a team conversation. The whole process takes about a week. We respect your time and won't waste it on brain teasers.",
+  },
+  {
+    question: 'What kind of engineer are you looking for?',
+    answer:
+      "People who want to own systems, not just write features. Engineers who think about architecture, reliability, and performance-and who care about the craft. We don't hire for specific frameworks. We hire for judgment and the drive to build something that matters.",
+  },
+  {
+    question: "What does 'agent-native' mean?",
+    answer:
+      "It means Al agents aren't bolted on-they're first-class participants in the architecture. You'll design systems where agents handle workflows, make tool calls via MCP, and operate autonomously within guardrails you build. The Rust infrastructure underneath has to be rock-solid because agent workloads are unforgiving.",
+  },
+]
+
+export const teamMembers = [
+  {
+    name: 'Louigie T. Aductante',
+    role: 'Sr. Software Engineer',
+    image: 'https://kodecraft.tech/team/louigie-aductante.jpg',
+  },
+  {
+    name: 'Syron C. Arapeles',
+    role: 'QA & Technical Support',
+  },
+  {
+    name: 'Gabriel A. Biler',
+    role: 'Infrastructure Engineer Lead',
+    image: 'https://kodecraft.tech/team/gabriel-biler.jpg',
+  },
+  {
+    name: 'Von Maverick C. Billones',
+    role: 'Jr. Software Engineer',
+    image: 'https://kodecraft.tech/team/von-billones.jpg',
+  },
+  {
+    name: 'Mark Louls B. Delos Santos',
+    role: 'Jr. Software Engineer',
+  },
+  {
+    name: 'Marla Victoria C. Depusoy',
+    role: 'Praject Manager/QA Analyst',
+    image: 'https://kodecraft.tech/team/maria-depusoy.jpg',
+  },
+  {
+    name: 'John Leo D. Echevarla',
+    role: 'Jr. Software Engineer',
+  },
+  {
+    name: 'Marycris P. Encomlenda',
+    role: 'Admin',
+  },
+  {
+    name: 'Jed Benedict F. Loba',
+    role: 'Jr. Infrastructure Engineer',
+  },
+  {
+    name: 'Ralph Jahred D. Magpantay',
+    role: 'Jr. Software Engineer',
+  },
+  {
+    name: 'John Rafael P. Masilungan',
+    role: 'Jr. Software Engineer',
+  },
+  {
+    name: 'Herald Jhan C. Matlenzo',
+    role: 'Jr. Software Engineer',
+    image: 'https://kodecraft.tech/team/herald-matienzo.jpg',
+  },
+  {
+    name: 'Mark Anthony V. Ortal',
+    role: 'Sr. Software Engineer',
+    image: 'https://kodecraft.tech/team/mark-ortal.jpg',
+  },
+  {
+    name: 'John Carlo P. Rabe',
+    role: 'Flutter Developer',
+    image: 'https://kodecraft.tech/team/john-rabe.jpg',
+  },
+  {
+    name: 'Adrielle Jolce B. Reyes',
+    role: 'Product Strategist',
+  },
+  {
+    name: 'David Jaynes A. Rogado',
+    role: 'Sr. Software Engineer',
+  },
+  {
+    name: 'Esmer Josef O. Santiago',
+    role: 'Sr. Software Engineer',
+    image: 'https://kodecraft.tech/team/esmer-santiago.jpg',
+  },
+  {
+    name: 'Gabriel G. Santoc',
+    role: 'Jr. Software Engineer',
+  },
+  {
+    name: 'Joaquin Z. Martinez',
+    role: 'Jr. Infrastructure Engineer',
+  },
+  {
+    name: 'Johann Sebastian E. Catalla',
+    role: 'Data Scientist / Quant Researcher & Developer',
+  },
+  {
+    name: 'Lance Alexander P. Ventura',
+    role: 'Jr. Al Engineer',
+  },
+  {
+    name: 'Princess Nicole C. Oriola',
+    role: 'Data Scientist / Quant Researcher & Developer',
+  },
+  {
+    name: 'Nicko Balmes',
+    role: 'Jr. QA Engineer',
+  },
 ]
 
 export const heroContent = {
