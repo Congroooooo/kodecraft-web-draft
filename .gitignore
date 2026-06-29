@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Credentials
+UsersNicko.git-credentials-gitlab
+*.git-credentials*
