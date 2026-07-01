@@ -37,11 +37,11 @@ export function FAQSection() {
 
         <div className="border-l border-t border-[rgba(148,163,184,0.14)] max-[680px]:border-l-0">
           {faqItems.map((item, index) => (
-            <details className="group border-b border-[rgba(148,163,184,0.14)]" key={item.question} open={index === 0}>
-              <summary className="flex min-h-[5.4rem] cursor-pointer list-none items-center justify-between gap-5 px-[clamp(1.2rem,2.5vw,2.25rem)] py-[1.4rem] text-[clamp(1rem,1.25vw,1.18rem)] font-semibold leading-[1.35] text-[rgba(240,245,255,0.9)] transition-[background,color] duration-200 ease-kc-out marker:hidden hover:bg-[rgba(74,222,128,0.08)] hover:text-kc-text focus-visible:bg-[rgba(74,222,128,0.08)] focus-visible:text-kc-text [&::-webkit-details-marker]:hidden max-[680px]:min-h-0 max-[680px]:items-start">
+            <details className="faq-item group border-b border-[rgba(148,163,184,0.14)]" key={item.question} open={index === 0}>
+              <summary className="flex min-h-[5.4rem] cursor-pointer list-none items-center justify-between gap-5 px-[clamp(1.2rem,2.5vw,2.25rem)] py-[1.4rem] text-[clamp(1rem,1.25vw,1.18rem)] font-semibold leading-[1.35] text-[rgba(134,239,172,0.82)] transition-[background,color] duration-200 ease-kc-out marker:hidden hover:bg-[rgba(74,222,128,0.08)] hover:text-[rgba(134,239,172,1)] focus-visible:bg-[rgba(74,222,128,0.08)] focus-visible:text-[rgba(134,239,172,1)] [&::-webkit-details-marker]:hidden max-[680px]:min-h-0 max-[680px]:items-start">
                 <span>{item.question}</span>
                 <span
-                  className="relative h-[1.35rem] w-[1.35rem] flex-none rounded-full border border-[rgba(240,245,255,0.72)] before:absolute before:left-1/2 before:top-1/2 before:h-px before:w-[0.58rem] before:-translate-x-1/2 before:-translate-y-1/2 before:bg-current before:content-[''] after:absolute after:left-1/2 after:top-1/2 after:h-px after:w-[0.58rem] after:-translate-x-1/2 after:-translate-y-1/2 after:rotate-90 after:bg-current after:transition-transform after:duration-200 after:ease-kc-out after:content-[''] group-open:after:rotate-0"
+                  className="relative h-[1.35rem] w-[1.35rem] flex-none rounded-full border border-[rgba(134,239,172,0.5)] transition-colors duration-200 ease-kc-out before:absolute before:left-1/2 before:top-1/2 before:h-px before:w-[0.58rem] before:-translate-x-1/2 before:-translate-y-1/2 before:bg-current before:content-[''] after:absolute after:left-1/2 after:top-1/2 after:h-px after:w-[0.58rem] after:-translate-x-1/2 after:-translate-y-1/2 after:rotate-90 after:bg-current after:transition-transform after:duration-200 after:ease-kc-out after:content-[''] group-open:after:rotate-0"
                   aria-hidden="true"
                 />
               </summary>

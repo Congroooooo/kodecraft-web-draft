@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 const imageTrailModules = import.meta.glob('../assets/imageTrail*.jpg', {
   eager: true,
   import: 'default',
-  query: '?url',
+  query: '?format=webp&quality=76',
 }) as Record<string, string>
 
 const imageTrailSources = Object.entries(imageTrailModules)

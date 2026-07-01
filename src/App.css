@@ -413,6 +413,21 @@
   transform: none;
 }
 
+/* Per-item image: hidden in the pinned stage (the shared media panel handles
+   the crossfade there), shown only in the static/mobile stack. */
+.build-item-media {
+  display: none;
+}
+
+.build-section.is-static .build-item-media {
+  aspect-ratio: 4 / 3;
+  background: #05070d;
+  border: 1px solid var(--build-border);
+  display: block;
+  object-fit: contain;
+  width: 100%;
+}
+
 .build-section.is-static .build-nav-item.is-active {
   color: rgba(148, 163, 184, 0.7);
 }
@@ -1182,7 +1197,9 @@
 
 .culture-cta {
   bottom: var(--culture-bottom-safe);
-  left: var(--page-gutter);
+  /* Align to the centered container's left edge, not the raw viewport gutter,
+     so on wide screens the CTA lines up with the description on the right. */
+  left: max(var(--page-gutter), calc((100% - var(--container)) / 2));
   position: absolute;
   z-index: 2;
 }
@@ -1246,41 +1263,6 @@
     font-size: clamp(2.35rem, 12vw, 4rem);
   }
 
-  .culture-section {
-    --culture-bottom-safe: clamp(1.5rem, 7vw, 2.4rem);
-    --culture-top-safe: clamp(7.5rem, 22vw, 9rem);
-    min-height: 82svh;
-  }
-
-  .culture-shell {
-    min-height: calc(82svh - var(--culture-top-safe) - var(--culture-bottom-safe));
-  }
-
-  .culture-trail,
-  .culture-hint {
-    display: none;
-  }
-
-  .culture-label {
-    position: relative;
-  }
-
-  .culture-outline {
-    font-size: clamp(4.4rem, 21vw, 8rem);
-    left: 50%;
-    top: 39%;
-    transform: translate(-50%, -50%);
-    -webkit-text-stroke-width: 1px;
-    text-stroke-width: 1px;
-  }
-
-  .culture-description {
-    bottom: 0;
-    font-size: 0.94rem;
-    max-width: min(100%, 27rem);
-    text-align: left;
-  }
-
   .build-item {
     grid-template-columns: 1fr;
   }
@@ -1290,6 +1272,203 @@
     grid-column: auto;
   }
 
+}
+
+/* Culture — tablet/mobile: keep the hero-style full-height layout (label top,
+   big outline centered, CTA bottom-left, description bottom-right), just scaled
+   down to fit. Hover image-trail + hint are desktop only. */
+@media (max-width: 860px) {
+  .culture-section {
+    --culture-bottom-safe: clamp(1.75rem, 5vw, 2.5rem);
+    --culture-top-safe: clamp(6.5rem, 18vw, 8.5rem);
+    min-height: 100svh;
+  }
+
+  .culture-shell {
+    min-height: calc(100svh - var(--culture-top-safe) - var(--culture-bottom-safe));
+  }
+
+  .culture-trail,
+  .culture-hint {
+    display: none;
+  }
+
+  .culture-outline {
+    font-size: clamp(3rem, 16vw, 7rem);
+    top: 37%;
+    -webkit-text-stroke-width: 1px;
+    text-stroke-width: 1px;
+  }
+
+  .culture-outline[data-reveal] {
+    transform: translate(-50%, calc(-50% + 1.4rem));
+  }
+
+  .culture-outline[data-reveal].is-visible {
+    transform: translate(-50%, -50%);
+  }
+
+  .culture-description {
+    bottom: clamp(8rem, 20vw, 9.5rem);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    max-width: min(56%, 19rem);
+    padding-top: 0.9rem;
+  }
+
+  .culture-cta {
+    bottom: clamp(4rem, 10vw, 5rem);
+    font-size: 0.72rem;
+    padding: 0.85rem 1.05rem;
+    width: auto;
+  }
+}
+
+/* From our engineers — mobile pinned: same scroll-crossfade as desktop, but the
+   cover image stacks on top with the post copy + nav below, sized to the sticky
+   stage (mirrors the what-we-build mobile frame). */
+@media (max-width: 860px) {
+  .eng-section:not(.is-static) .eng-frame {
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(6rem, 1fr) auto;
+    height: min(80svh, 46rem);
+    padding: 1rem;
+  }
+
+  .eng-section:not(.is-static) .eng-media-panel {
+    order: 1;
+  }
+
+  .eng-section:not(.is-static) .eng-left {
+    gap: 1rem;
+    order: 2;
+    overflow: visible;
+  }
+
+  .eng-section:not(.is-static) .eng-copy-panel {
+    padding: 1.25rem;
+  }
+
+  .eng-section:not(.is-static) .eng-item {
+    gap: 0.5rem;
+    grid-template-rows: repeat(5, auto);
+  }
+
+  .eng-section:not(.is-static) .eng-item h3 {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+  }
+
+  .eng-section:not(.is-static) .eng-item span {
+    font-size: 0.9rem;
+  }
+
+  .eng-section:not(.is-static) .eng-nav-item {
+    font-size: 0.66rem;
+    gap: 0.7rem;
+    padding: 0.45rem 0;
+  }
+}
+
+/* First 90 days — mobile pinned: media frame parks as a full-width band up top
+   (JS-driven), and each step's copy crossfades in the lower band below it. */
+@media (max-width: 860px) {
+  .first90-section:not(.is-static) .first90-copy-block,
+  .first90-section:not(.is-static) .first90-copy-block.pos-left,
+  .first90-section:not(.is-static) .first90-copy-block.pos-right,
+  .first90-section:not(.is-static) .first90-copy-block.pos-center {
+    align-items: flex-start;
+    bottom: 5%;
+    left: var(--page-gutter);
+    right: var(--page-gutter);
+    text-align: left;
+    top: 51%;
+    width: auto;
+  }
+
+  .first90-section:not(.is-static) .first90-copy {
+    gap: 0.7rem;
+    max-width: none;
+  }
+
+  .first90-section:not(.is-static) .first90-copy h3 {
+    font-size: clamp(1.85rem, 7.4vw, 2.7rem);
+  }
+
+  .first90-section:not(.is-static) .first90-copy span {
+    font-size: 0.98rem;
+    line-height: 1.5;
+  }
+
+  .first90-section:not(.is-static) .first90-copy a {
+    margin-top: 0.8rem;
+    padding: 0.8rem 1.15rem;
+  }
+
+  .first90-intro-card {
+    gap: 0.7rem;
+    padding: 1.25rem;
+  }
+
+  .first90-intro-card h2 {
+    font-size: clamp(1.5rem, 6.2vw, 2.4rem);
+  }
+}
+
+/* Mobile pinned frame: keep the desktop scroll-crossfade behaviour, but stack the
+   media panel over the copy + nav in a single column sized to the sticky stage. */
+@media (max-width: 860px) {
+  .build-section:not(.is-static) .build-frame {
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    /* Image row flexes and shrinks; copy + nav is auto-sized so it can never
+       overflow the frame border (which the progress dot rides). */
+    grid-template-rows: minmax(6rem, 1fr) auto;
+    height: min(80svh, 46rem);
+    padding: 1rem;
+  }
+
+  .build-section:not(.is-static) .build-media {
+    aspect-ratio: auto;
+    height: 100%;
+    transform: none;
+  }
+
+  .build-section:not(.is-static) .build-media-tags,
+  .build-section:not(.is-static) .build-captions,
+  .build-section:not(.is-static) .build-tag-panel {
+    display: none;
+  }
+
+  .build-section:not(.is-static) .build-right {
+    gap: 1rem;
+  }
+
+  .build-section:not(.is-static) .build-copy-panel {
+    padding: 1.25rem;
+  }
+
+  .build-section:not(.is-static) .build-item {
+    gap: 0.75rem;
+  }
+
+  .build-section:not(.is-static) .build-item h3 {
+    font-size: clamp(1.5rem, 6.4vw, 2.1rem);
+  }
+
+  .build-section:not(.is-static) .build-item span {
+    font-size: 0.95rem;
+  }
+
+  .build-section:not(.is-static) .build-lower {
+    grid-template-columns: 1fr;
+  }
+
+  .build-section:not(.is-static) .build-nav-item {
+    font-size: 0.7rem;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1411,11 +1590,11 @@
   box-shadow: 0 0.9rem 1.9rem rgba(0, 0, 0, 0.24);
   color: rgba(240, 245, 255, 0.88);
   display: inline-flex;
-  font-size: 0.82rem;
   gap: 0.5rem;
+  height: 2.75rem;
   left: 0;
   opacity: 0;
-  padding: 0.5rem 0.85rem;
+  padding: 0 0.8rem 0 0.6rem;
   pointer-events: none;
   position: absolute;
   top: 0;
@@ -1435,19 +1614,41 @@
   width: 2.2rem;
 }
 
-.routing-chip-dot {
-  background: var(--color-brand-1);
-  border-radius: 50%;
-  height: 0.45rem;
-  width: 0.45rem;
+.routing-logo {
+  align-items: center;
+  color: var(--color-brand-1);
+  display: inline-flex;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 800;
+  height: 1.55rem;
+  justify-content: center;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  width: 1.55rem;
 }
 
-.routing-chip-dot[data-cat='1'] {
-  background: var(--color-brand-5);
+.routing-logo-svg {
+  display: block;
+  height: 1.45rem;
+  width: 1.45rem;
 }
 
-.routing-chip-dot[data-cat='2'] {
-  background: var(--color-brand-2);
+.routing-logo-text {
+  display: block;
+  transform: translateY(0.02em);
+}
+
+.routing-chip-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  max-width: 8.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .routing-buckets {
@@ -1533,39 +1734,53 @@
 }
 
 @media (max-width: 860px) {
-  .routing-card,
-  .routing-card.is-reverse .routing-panel {
-    grid-template-columns: 1fr;
-    order: 0;
-  }
-
+  /* Single column: copy/details on top, animated routing panel below (for both
+     normal and reversed cards). The chip-routing animation keeps running. */
   .routing-card {
     grid-template-columns: 1fr;
   }
 
-  .routing-stream {
-    gap: 0.5rem;
-    padding: 1.1rem;
-    position: static;
+  .routing-copy {
+    order: 1;
   }
 
-  .routing-chip {
-    opacity: 1;
-    position: static;
-  }
-
-  .routing-chip::after {
-    display: none;
-  }
-
-  .routing-buckets {
-    margin-top: 1.2rem;
-    position: static;
+  .routing-panel,
+  .routing-card.is-reverse .routing-panel {
+    order: 2;
   }
 
   .routing-panel {
-    min-height: 0;
-    padding-bottom: 1.2rem;
+    min-height: clamp(17rem, 56vw, 22rem);
+  }
+
+  .routing-chip {
+    gap: 0.4rem;
+    height: 2.4rem;
+    padding: 0 0.65rem 0 0.5rem;
+  }
+
+  .routing-logo {
+    height: 1.35rem;
+    width: 1.35rem;
+  }
+
+  .routing-logo-svg {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  .routing-chip-label {
+    font-size: 0.72rem;
+    max-width: 6.5rem;
+  }
+
+  .routing-bucket {
+    padding: 1.1rem 0.35rem;
+  }
+
+  .routing-bucket-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
   }
 }
 

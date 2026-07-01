@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { engineerPosts } from '../content/home/engineers'
-import postImage1 from '../assets/imageTrail12.jpg'
-import postImage2 from '../assets/imageTrail27.jpg'
-import postImage3 from '../assets/imageTrail33.jpg'
-import postImage4 from '../assets/imageTrail41.jpg'
-import postImage5 from '../assets/imageTrail48.jpg'
-import postImage6 from '../assets/imageTrail6.jpg'
+import postImage1 from '../assets/imageTrail12.jpg?format=webp&quality=76'
+import postImage2 from '../assets/imageTrail27.jpg?format=webp&quality=76'
+import postImage3 from '../assets/imageTrail33.jpg?format=webp&quality=76'
+import postImage4 from '../assets/imageTrail41.jpg?format=webp&quality=76'
+import postImage5 from '../assets/imageTrail48.jpg?format=webp&quality=76'
+import postImage6 from '../assets/imageTrail6.jpg?format=webp&quality=76'
 
 // Cover image per post (index-aligned with engineerPosts).
 const postImages = [postImage1, postImage2, postImage3, postImage4, postImage5, postImage6]
@@ -21,7 +21,10 @@ export function EngineersSection() {
     }
 
     const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const isStatic = () => mqReduce.matches || window.innerWidth < 860
+    // Pinned crossfade runs on every viewport now; only reduced-motion users get
+    // the flat static stack. Mobile uses a single-column frame (image on top,
+    // copy + nav below) — see App.css.
+    const isStatic = () => mqReduce.matches
     const total = engineerPosts.length
     // Fraction of each post's equal scroll segment where it holds fully visible
     // before morphing to the next. Higher = longer dwell, shorter morph.
@@ -43,6 +46,7 @@ export function EngineersSection() {
 
     let raf = 0
     let scrolling = false
+    let isVisible = !('IntersectionObserver' in window)
 
     // Scroll-scrubbed item choreography: previous post clears upward, next post
     // rises into place as the user scrolls through the pinned stage.
@@ -138,10 +142,26 @@ export function EngineersSection() {
         section.classList.add('is-static')
         stopScrubbing()
         clearInline()
-      } else {
+      } else if (isVisible) {
         section.classList.remove('is-static')
         startScrubbing()
+      } else {
+        section.classList.remove('is-static')
+        stopScrubbing()
       }
+    }
+
+    let observer: IntersectionObserver | null = null
+
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting
+          applyMode()
+        },
+        { rootMargin: '35% 0px' },
+      )
+      observer.observe(section)
     }
 
     applyMode()
@@ -150,6 +170,7 @@ export function EngineersSection() {
     return () => {
       cancelAnimationFrame(raf)
       stopScrubbing()
+      observer?.disconnect()
       window.removeEventListener('resize', applyMode)
     }
   }, [])

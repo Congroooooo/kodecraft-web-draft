@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import firstCardImage from '../assets/1stcard.png'
-import secondCardImage from '../assets/2ndcard.png'
-import thirdCardImage from '../assets/3rdcard.png'
+import firstCardImage from '../assets/1stcard.png?format=webp&quality=82'
+import secondCardImage from '../assets/2ndcard.png?format=webp&quality=82'
+import thirdCardImage from '../assets/3rdcard.png?format=webp&quality=82'
 import { first90DaysItems } from '../content/home/first90Days'
 
 // Position of each copy block on screen, by step index.
@@ -37,8 +37,12 @@ export function First90DaysSection() {
     const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)')
     let animationFrame = 0
     let scrolling = false
+    let isVisible = !('IntersectionObserver' in window)
 
-    const isStatic = () => mqReduce.matches || window.innerWidth < 860
+    // Only reduced-motion users get the flat static stack; every viewport size
+    // now runs the pinned scrub (mobile uses an adapted single-column layout).
+    const isStatic = () => mqReduce.matches
+    const isMobile = () => window.innerWidth < 860
 
     const update = () => {
       const hero = section.querySelector<HTMLElement>('.first90-hero')
@@ -54,14 +58,26 @@ export function First90DaysSection() {
       const scrollableDistance = Math.max(1, bounds.height - window.innerHeight)
       const p = clamp(-bounds.top / scrollableDistance)
 
-      // Hero frame position / size.
-      const rect = rectAt(p)
-      hero.style.top = `${rect.top}%`
-      hero.style.right = `${rect.right}%`
-      hero.style.bottom = `${rect.bottom}%`
-      hero.style.left = `${rect.left}%`
-      // Square corners as it reaches full bleed.
-      hero.style.borderRadius = `${lerp(20, 0, smoothstep(0.74, 0.86, p))}px`
+      const mobile = isMobile()
+
+      // Hero frame position / size. On mobile the frame parks as a fixed
+      // full-width band at the top; the card images still crossfade beneath the
+      // copy that reveals in the lower band. On desktop it travels.
+      if (mobile) {
+        hero.style.top = '4%'
+        hero.style.right = '4%'
+        hero.style.bottom = '52%'
+        hero.style.left = '4%'
+        hero.style.borderRadius = '14px'
+      } else {
+        const rect = rectAt(p)
+        hero.style.top = `${rect.top}%`
+        hero.style.right = `${rect.right}%`
+        hero.style.bottom = `${rect.bottom}%`
+        hero.style.left = `${rect.left}%`
+        // Square corners as it reaches full bleed.
+        hero.style.borderRadius = `${lerp(20, 0, smoothstep(0.74, 0.86, p))}px`
+      }
 
       // Footage / placeholder crossfade inside the frame.
       const layerOpacity = [
@@ -74,9 +90,9 @@ export function First90DaysSection() {
         layer.style.opacity = `${layerOpacity[index] ?? 0}`
       })
 
-      // Dark scrim behind the closing caption.
+      // Dark scrim behind the closing caption (desktop full-bleed only).
       if (scrim) {
-        scrim.style.opacity = `${smoothstep(0.74, 0.9, p) * 0.72}`
+        scrim.style.opacity = mobile ? '0' : `${smoothstep(0.74, 0.9, p) * 0.72}`
       }
 
       // Copy blocks: timed reveal windows.
@@ -117,24 +133,43 @@ export function First90DaysSection() {
         section.classList.add('is-static')
         stopScrubbing()
         resetInlineStyles(section)
-      } else {
+      } else if (isVisible) {
         section.classList.remove('is-static')
         startScrubbing()
+      } else {
+        section.classList.remove('is-static')
+        stopScrubbing()
       }
     }
 
-    applyMode()
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
       applyMode()
       if (scrolling) {
         queueUpdate()
       }
-    })
+    }
+
+    let observer: IntersectionObserver | null = null
+
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting
+          applyMode()
+        },
+        { rootMargin: '35% 0px' },
+      )
+      observer.observe(section)
+    }
+
+    applyMode()
+    window.addEventListener('resize', handleResize)
 
     return () => {
       cancelAnimationFrame(animationFrame)
       stopScrubbing()
-      window.removeEventListener('resize', applyMode)
+      observer?.disconnect()
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 

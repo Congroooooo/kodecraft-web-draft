@@ -1,4 +1,5 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import heroImage from '../assets/hero.png'
 import { heroContent } from '../content/home/hero'
 import { useVideoSyncedGlow } from '../hooks/useVideoSyncedGlow'
 
@@ -7,7 +8,7 @@ const heroSectionClasses = [
   '[--hero-glow-alpha:0.18] [--hero-glow-core-height:32rem] [--hero-glow-core-width:42rem]',
   '[--hero-glow-halo-height:42rem] [--hero-glow-halo-width:68rem] [--hero-glow-x:52%] [--hero-glow-y:43%]',
   'max-[1024px]:flex max-[1024px]:min-h-[860px] max-[1024px]:flex-col max-[1024px]:justify-center',
-  'max-[680px]:min-h-[760px] max-[680px]:pt-[7.5rem]',
+  'max-[680px]:min-h-svh max-[680px]:justify-start max-[680px]:pb-[2.75rem] max-[680px]:pt-[6.25rem]',
 ].join(' ')
 
 const heroScrimClasses = [
@@ -20,7 +21,7 @@ const heroButtonClasses = [
   'bg-kc-brand px-[1.45rem] text-[#07100b]',
   'before:pointer-events-none before:absolute before:inset-0 before:-translate-x-[120%] before:bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)] before:content-[\'\'] before:transition-transform before:duration-700 before:ease-kc-out',
   'hover:before:translate-x-[120%] focus-visible:before:translate-x-[120%]',
-  'max-[680px]:w-full max-[680px]:justify-center',
+  'max-[680px]:min-h-[3.05rem] max-[680px]:w-auto max-[680px]:justify-center max-[680px]:px-[1.35rem]',
 ].join(' ')
 
 const heroSecondaryButtonClasses = [
@@ -33,29 +34,39 @@ const heroSecondaryButtonClasses = [
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [videoFailed, setVideoFailed] = useState(false)
 
   useVideoSyncedGlow(videoRef, sectionRef)
 
   return (
     <section className={heroSectionClasses} aria-labelledby="hero-title" ref={sectionRef}>
       <video
-        className="absolute inset-0 z-0 h-full w-full scale-[1.02] object-cover object-[60%_center] brightness-[0.76] contrast-[1.08] saturate-[0.72]"
+        className="absolute inset-0 z-0 h-full w-full scale-[1.02] object-cover object-[50%_center] brightness-[0.76] contrast-[1.08] saturate-[0.72] max-[680px]:object-[47%_center]"
         autoPlay
         muted
         loop
         playsInline
         aria-hidden="true"
-        poster="/favicon.svg"
+        poster={heroImage}
         ref={videoRef}
+        onError={() => setVideoFailed(true)}
       >
         <source src="/media/data-flow.webm" type="video/webm" />
       </video>
+      {videoFailed ? (
+        <img
+          className="absolute inset-0 z-0 h-full w-full scale-[1.02] object-cover object-[50%_center] brightness-[0.76] contrast-[1.08] saturate-[0.72] max-[680px]:object-[47%_center]"
+          src={heroImage}
+          alt=""
+          aria-hidden="true"
+        />
+      ) : null}
 
       <div className={heroScrimClasses} aria-hidden="true" />
 
-      <div className="absolute left-kc-gutter top-[43%] z-[2] max-w-[min(38rem,52vw)] -translate-y-1/2 max-[1024px]:relative max-[1024px]:left-auto max-[1024px]:top-auto max-[1024px]:max-w-full max-[1024px]:translate-y-0">
+      <div className="absolute left-kc-gutter top-[43%] z-[2] max-w-[min(38rem,52vw)] -translate-y-1/2 max-[1024px]:relative max-[1024px]:left-auto max-[1024px]:top-auto max-[1024px]:max-w-full max-[1024px]:translate-y-0 max-[680px]:mt-[22vh]">
         <h1
-          className="max-w-[10.8em] text-[clamp(2.75rem,3vw,4.25rem)] leading-[1.08] tracking-[-0.03em] max-[680px]:text-[clamp(2.85rem,15vw,5.25rem)]"
+          className="max-w-[10.8em] text-[clamp(2.75rem,3vw,4.25rem)] leading-[1.08] tracking-[-0.03em] max-[680px]:text-[clamp(2.2rem,9vw,3.4rem)] max-[680px]:leading-[1.08]"
           id="hero-title"
           data-reveal
         >
@@ -67,16 +78,16 @@ export function HeroSection() {
         </h1>
       </div>
 
-      <div className="absolute bottom-[4.5rem] left-kc-gutter right-kc-gutter z-[2] grid items-start justify-between gap-[clamp(2rem,8vw,8rem)] [grid-template-columns:minmax(0,36rem)_minmax(20rem,26rem)] max-[1024px]:relative max-[1024px]:bottom-auto max-[1024px]:left-auto max-[1024px]:right-auto max-[1024px]:mt-8 max-[1024px]:w-full max-[1024px]:grid-cols-1">
+      <div className="absolute bottom-[4.5rem] left-kc-gutter right-kc-gutter z-[2] grid items-start justify-between gap-[clamp(2rem,8vw,8rem)] [grid-template-columns:minmax(0,36rem)_minmax(20rem,26rem)] max-[1024px]:relative max-[1024px]:bottom-auto max-[1024px]:left-auto max-[1024px]:right-auto max-[1024px]:mt-8 max-[1024px]:w-full max-[1024px]:grid-cols-1 max-[680px]:mt-auto max-[680px]:gap-5">
         <div className="max-w-[36rem]">
           <p
-            className="max-w-[36rem] text-[clamp(1rem,1.4vw,1.2rem)] leading-[1.65] text-kc-muted max-[680px]:mt-[1.45rem]"
+            className="max-w-[36rem] text-[clamp(1rem,1.4vw,1.2rem)] leading-[1.65] text-kc-muted max-[680px]:mt-0 max-[680px]:max-w-[31rem] max-[680px]:text-[0.96rem] max-[680px]:leading-[1.55]"
             data-reveal
           >
             {heroContent.description}
           </p>
-          <div className="mt-[2.2rem] flex flex-wrap items-center gap-4 max-[680px]:mt-[1.55rem] max-[680px]:flex-col max-[680px]:items-stretch">
-            <a className={heroButtonClasses} href="#roles">
+          <div className="mt-[2.2rem] flex flex-wrap items-center gap-4 max-[680px]:mt-[1.35rem] max-[680px]:flex-col max-[680px]:items-start">
+            <a className={heroButtonClasses} href="#contact">
               See Open Roles
               <span className="transition-transform duration-300 ease-kc-out group-hover:translate-x-[0.28rem]" aria-hidden="true">
                 -&gt;
@@ -89,7 +100,7 @@ export function HeroSection() {
         </div>
 
         <aside
-          className="grid w-[26vw] max-w-[26rem] gap-[0.55rem] self-end border-t border-[rgba(240,245,255,0.78)] pt-[1.2rem] text-kc-text max-[680px]:mt-7 max-[680px]:w-full"
+          className="ml-auto grid w-[20vw] max-w-[20rem] gap-[0.55rem] self-end border-t border-[rgba(240,245,255,0.78)] pt-[1.2rem] text-kc-text max-[1024px]:order-first max-[1024px]:w-[72%] max-[1024px]:max-w-[24rem] max-[680px]:mt-0"
           aria-label="KodeCraft focus"
         >
           <span className="text-[0.78rem] uppercase tracking-[0.12em] text-[rgba(240,245,255,0.56)]">

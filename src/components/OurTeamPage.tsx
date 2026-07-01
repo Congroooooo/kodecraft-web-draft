@@ -1,14 +1,14 @@
 import type { CSSProperties } from 'react'
-import imageTrail1 from '../assets/imageTrail1.jpg'
-import imageTrail10 from '../assets/imageTrail10.jpg'
-import imageTrail12 from '../assets/imageTrail12.jpg'
-import imageTrail15 from '../assets/imageTrail15.jpg'
-import imageTrail18 from '../assets/imageTrail18.jpg'
-import imageTrail22 from '../assets/imageTrail22.jpg'
-import imageTrail27 from '../assets/imageTrail27.jpg'
-import imageTrail33 from '../assets/imageTrail33.jpg'
-import imageTrail39 from '../assets/imageTrail39.jpg'
-import imageTrail46 from '../assets/imageTrail46.jpg'
+import imageTrail1 from '../assets/imageTrail1.jpg?format=webp&quality=76'
+import imageTrail10 from '../assets/imageTrail10.jpg?format=webp&quality=76'
+import imageTrail12 from '../assets/imageTrail12.jpg?format=webp&quality=76'
+import imageTrail15 from '../assets/imageTrail15.jpg?format=webp&quality=76'
+import imageTrail18 from '../assets/imageTrail18.jpg?format=webp&quality=76'
+import imageTrail22 from '../assets/imageTrail22.jpg?format=webp&quality=76'
+import imageTrail27 from '../assets/imageTrail27.jpg?format=webp&quality=76'
+import imageTrail33 from '../assets/imageTrail33.jpg?format=webp&quality=76'
+import imageTrail39 from '../assets/imageTrail39.jpg?format=webp&quality=76'
+import imageTrail46 from '../assets/imageTrail46.jpg?format=webp&quality=76'
 import { teamMembers } from '../content/team'
 
 const teamImages = [
@@ -90,7 +90,7 @@ export function OurTeamPage() {
                 >
                   <div className="group relative isolate h-full transform-gpu cursor-default overflow-hidden rounded-none border border-[rgba(148,163,184,0.08)] bg-[rgba(240,245,255,0.04)] transition-all duration-[320ms] ease-kc-out will-change-transform hover:z-[2] hover:scale-[1.045] hover:border-kc-brand hover:shadow-[0_1.5rem_4rem_rgba(0,0,0,0.28)] focus-visible:z-[2] focus-visible:scale-[1.045] focus-visible:border-kc-brand focus-visible:shadow-[0_1.5rem_4rem_rgba(0,0,0,0.28)]" tabIndex={0}>
                     <img alt={`${member.name}, ${member.role}`} className="absolute inset-0 z-0 h-full w-full scale-[1.04] transform-gpu object-cover brightness-[0.9] contrast-[1.05] grayscale transition-all duration-[420ms] ease-kc-out will-change-transform group-hover:scale-[1.12] group-hover:brightness-[0.84] group-hover:contrast-[1.04] group-hover:grayscale-0 group-focus-visible:scale-[1.12] group-focus-visible:brightness-[0.84] group-focus-visible:contrast-[1.04] group-focus-visible:grayscale-0" src={image} />
-                    <div className="absolute inset-0 z-[1] grid translate-y-[0.8rem] transform-gpu place-content-end justify-items-start bg-[linear-gradient(180deg,rgba(7,11,20,0),rgba(7,11,20,0.88)_58%)] p-5 text-left opacity-0 transition-all duration-[320ms] ease-kc-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                    <div className="absolute inset-0 z-[1] grid translate-y-[0.8rem] transform-gpu place-content-end justify-items-start bg-[linear-gradient(180deg,rgba(7,11,20,0),rgba(7,11,20,0.88)_58%)] p-5 text-left opacity-0 transition-all duration-[320ms] ease-kc-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 max-[1024px]:translate-y-0 max-[1024px]:opacity-100">
                       <h3 className="text-[clamp(1rem,1.25vw,1.2rem)] font-bold leading-[1.2] tracking-[-0.03em] text-[rgba(240,245,255,0.94)]">{member.name}</h3>
                       <p className="mt-2 text-[clamp(0.88rem,1vw,1rem)] leading-[1.35] text-kc-brand">{member.role}</p>
                     </div>

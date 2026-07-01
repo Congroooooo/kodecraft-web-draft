@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { buildItems } from '../content/home/build'
-import buildImage1 from '../assets/whatWeBuild1.png'
-import buildImage2 from '../assets/whatWeBuild2.png'
-import buildImage3 from '../assets/whatWeBuild3.png'
-import buildImage4 from '../assets/whatWeBuild4.png'
+import buildImage1 from '../assets/whatWeBuild1.png?format=webp&quality=82'
+import buildImage2 from '../assets/whatWeBuild2.png?format=webp&quality=82'
+import buildImage3 from '../assets/whatWeBuild3.png?format=webp&quality=82'
+import buildImage4 from '../assets/whatWeBuild4.png?format=webp&quality=82'
 
 // Placeholder image holders, one per build item (index-aligned with buildItems).
 const buildImages = [buildImage1, buildImage2, buildImage3, buildImage4]
@@ -19,7 +19,9 @@ export function BuildSection() {
     }
 
     const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const isStatic = () => mqReduce.matches || window.innerWidth < 860
+    // Pinned crossfade runs on every viewport now; only reduced-motion users get
+    // the flat static stack. Mobile uses a single-column frame (see App.css).
+    const isStatic = () => mqReduce.matches
     const total = buildItems.length
     // Fraction of each item's equal scroll segment where the item is held fully
     // visible before morphing to the next. Higher = longer dwell, shorter morph.
@@ -42,6 +44,7 @@ export function BuildSection() {
 
     let raf = 0
     let scrolling = false
+    let isVisible = !('IntersectionObserver' in window)
 
     // Scroll-scrubbed item choreography: previous item clears upward, next item
     // rises into place, and the final item gets a short hold before release.
@@ -142,10 +145,26 @@ export function BuildSection() {
         section.classList.add('is-static')
         stopScrubbing()
         clearInline()
-      } else {
+      } else if (isVisible) {
         section.classList.remove('is-static')
         startScrubbing()
+      } else {
+        section.classList.remove('is-static')
+        stopScrubbing()
       }
+    }
+
+    let observer: IntersectionObserver | null = null
+
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting
+          applyMode()
+        },
+        { rootMargin: '35% 0px' },
+      )
+      observer.observe(section)
     }
 
     applyMode()
@@ -154,6 +173,7 @@ export function BuildSection() {
     return () => {
       cancelAnimationFrame(raf)
       stopScrubbing()
+      observer?.disconnect()
       window.removeEventListener('resize', applyMode)
     }
   }, [])
@@ -207,6 +227,14 @@ export function BuildSection() {
                 <div className="build-track">
                   {buildItems.map((item, index) => (
                     <article className="build-item" data-index={index} key={item.title}>
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        className="build-item-media"
+                        draggable="false"
+                        loading="lazy"
+                        src={buildImages[index % buildImages.length]}
+                      />
                       <h3>{item.title}</h3>
                       <span>{item.text}</span>
                     </article>

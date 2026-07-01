@@ -1,4 +1,4 @@
-import footerBackground from '../assets/imageTrail39.jpg'
+import footerBackground from '../assets/imageTrail39.jpg?format=webp&quality=76'
 
 const footerLinkClasses = [
   'relative w-fit text-[rgba(240,245,255,0.82)] transition-colors duration-300 ease-kc-out hover:text-kc-text focus-visible:text-kc-text',

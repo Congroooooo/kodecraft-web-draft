@@ -60,9 +60,47 @@ export function useVideoSyncedGlow(
       animationFrame = window.requestAnimationFrame(syncGlowToVideo)
     }
 
-    animationFrame = window.requestAnimationFrame(syncGlowToVideo)
+    const startSync = () => {
+      if (animationFrame) {
+        return
+      }
 
-    return () => window.cancelAnimationFrame(animationFrame)
+      void video.play().catch(() => undefined)
+      animationFrame = window.requestAnimationFrame(syncGlowToVideo)
+    }
+
+    const stopSync = () => {
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame)
+        animationFrame = 0
+      }
+
+      video.pause()
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      startSync()
+
+      return stopSync
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startSync()
+        } else {
+          stopSync()
+        }
+      },
+      { threshold: 0.08 },
+    )
+
+    observer.observe(container)
+
+    return () => {
+      observer.disconnect()
+      stopSync()
+    }
   }, [containerRef, videoRef])
 }
 

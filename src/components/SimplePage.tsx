@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { pageContent } from '../content/pages'
 import { momentPageCopy, moments, type Moment } from '../content/moments'
 
@@ -19,21 +19,65 @@ export function SimplePage({ path }: SimplePageProps) {
   const pageMoments = path in momentPageCopy ? momentPageCopy[path as keyof typeof momentPageCopy] : null
   const items = pageMoments ? moments.filter((moment) => moment.type === pageMoments.type) : []
   const featured = items[0]
+  const modalPanelRef = useRef<HTMLDivElement>(null)
+  const modalOpenerRef = useRef<HTMLElement | null>(null)
   const [selectedMoment, setSelectedMoment] = useState<Moment | null>(null)
+
+  const openMoment = (moment: Moment) => {
+    modalOpenerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    setSelectedMoment(moment)
+  }
+
+  const closeMoment = () => setSelectedMoment(null)
 
   useEffect(() => {
     if (!selectedMoment) return
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setSelectedMoment(null)
+      if (event.key === 'Escape') {
+        closeMoment()
+        return
+      }
+
+      if (event.key !== 'Tab') {
+        return
+      }
+
+      const focusableElements = getFocusableElements(modalPanelRef.current)
+
+      if (focusableElements.length === 0) {
+        event.preventDefault()
+        modalPanelRef.current?.focus()
+        return
+      }
+
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault()
+        lastElement.focus()
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault()
+        firstElement.focus()
+      }
     }
 
+    const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', handleKeyDown)
 
+    window.requestAnimationFrame(() => {
+      const firstFocusableElement = getFocusableElements(modalPanelRef.current)[0]
+
+      ;(firstFocusableElement ?? modalPanelRef.current)?.focus()
+    })
+
     return () => {
-      document.body.style.overflow = ''
+      document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', handleKeyDown)
+      modalOpenerRef.current?.focus()
+      modalOpenerRef.current = null
     }
   }, [selectedMoment])
 
@@ -57,7 +101,7 @@ export function SimplePage({ path }: SimplePageProps) {
                 <h1 className="text-balance text-[clamp(2.6rem,4.7vw,5.35rem)] font-semibold leading-[0.96] tracking-[-0.07em]" id="moments-title">{content.title}</h1>
                 <p className="mt-5 max-w-[44rem] leading-[1.65] text-[rgba(203,213,225,0.74)]">{content.description}</p>
                 {featured ? (
-                  <button className={momentActionClasses} type="button" onClick={() => setSelectedMoment(featured)}>
+                  <button className={momentActionClasses} type="button" onClick={() => openMoment(featured)}>
                     View Featured <span className="transition-transform duration-300 ease-kc-out group-hover:translate-x-[0.28rem]" aria-hidden="true">-&gt;</span>
                   </button>
                 ) : null}
@@ -77,7 +121,7 @@ export function SimplePage({ path }: SimplePageProps) {
               <div className="grid gap-[clamp(1.25rem,2.2vw,2rem)] grid-cols-3 max-[1024px]:grid-cols-2 max-[680px]:grid-cols-1">
                 {items.map((item) => (
                   <article className="flex flex-col border border-[rgba(148,163,184,0.1)] bg-[rgba(15,23,42,0.5)] p-[0.75rem] pb-[1.1rem]" key={item.id}>
-                    <button className="block w-full cursor-pointer appearance-none overflow-hidden border-0 bg-transparent p-0" type="button" onClick={() => setSelectedMoment(item)}>
+                    <button className="block w-full cursor-pointer appearance-none overflow-hidden border-0 bg-transparent p-0" type="button" onClick={() => openMoment(item)}>
                       <img className={`${momentImageClasses} transition-[filter,transform] duration-300 ease-kc-out hover:scale-[1.04] hover:brightness-[0.9] hover:contrast-[1.08] hover:saturate-[0.9]`} alt="" src={item.images[0]} />
                     </button>
                     <div className="mt-[1.1rem] flex items-center justify-between text-[0.8rem] text-[rgba(203,213,225,0.62)]">
@@ -86,7 +130,7 @@ export function SimplePage({ path }: SimplePageProps) {
                     </div>
                     <h3 className="mt-3 text-[clamp(1.2rem,1.6vw,1.65rem)] font-bold leading-[1.12] tracking-[-0.045em]">{item.title}</h3>
                     <p className="mt-3 text-[0.94rem] leading-[1.65] text-[rgba(203,213,225,0.74)]">{item.description}</p>
-                    <button className={momentActionClasses} type="button" onClick={() => setSelectedMoment(item)}>
+                    <button className={momentActionClasses} type="button" onClick={() => openMoment(item)}>
                       View Images <span className="transition-transform duration-300 ease-kc-out group-hover:translate-x-[0.28rem]" aria-hidden="true">-&gt;</span>
                     </button>
                   </article>
@@ -103,15 +147,15 @@ export function SimplePage({ path }: SimplePageProps) {
 
         {selectedMoment ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-[clamp(1rem,3vw,2rem)]" role="dialog" aria-modal="true" aria-labelledby="moments-modal-title">
-            <button className="absolute inset-0 cursor-pointer appearance-none border-0 bg-[rgba(3,7,18,0.78)] p-0" type="button" aria-label="Close image viewer" onClick={() => setSelectedMoment(null)} />
-            <div className="moments-modal-panel relative max-h-[min(86svh,58rem)] w-full max-w-[min(72rem,100%)] overflow-auto border border-[rgba(148,163,184,0.18)] bg-[rgba(7,11,20,0.96)] p-[clamp(1rem,2.5vw,2rem)] shadow-[0_2rem_5rem_rgba(0,0,0,0.42)] [scrollbar-color:rgba(74,222,128,0.58)_rgba(15,23,42,0.92)] [scrollbar-width:thin]">
+            <button className="absolute inset-0 cursor-pointer appearance-none border-0 bg-[rgba(3,7,18,0.78)] p-0" type="button" aria-label="Close image viewer" onClick={closeMoment} tabIndex={-1} />
+            <div className="moments-modal-panel relative max-h-[min(86svh,58rem)] w-full max-w-[min(72rem,100%)] overflow-auto border border-[rgba(148,163,184,0.18)] bg-[rgba(7,11,20,0.96)] p-[clamp(1rem,2.5vw,2rem)] shadow-[0_2rem_5rem_rgba(0,0,0,0.42)] [scrollbar-color:rgba(74,222,128,0.58)_rgba(15,23,42,0.92)] [scrollbar-width:thin]" ref={modalPanelRef} tabIndex={-1}>
               <div className="mb-6 flex items-start justify-between gap-6 max-[680px]:flex-col">
                 <div>
                   <p className="section-label">{pageMoments.eyebrow}</p>
                   <h2 className="mt-2 text-[clamp(1.8rem,3vw,3rem)] leading-none tracking-[-0.055em]" id="moments-modal-title">{selectedMoment.title}</h2>
                   <p className="mt-3 max-w-[52rem] leading-[1.6] text-[rgba(203,213,225,0.74)]">{selectedMoment.description}</p>
                 </div>
-                <button className="flex-none cursor-pointer appearance-none border border-[rgba(74,222,128,0.24)] bg-[rgba(74,222,128,0.12)] px-4 py-3 text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-kc-brand" type="button" onClick={() => setSelectedMoment(null)}>
+                <button className="flex-none cursor-pointer appearance-none border border-[rgba(74,222,128,0.24)] bg-[rgba(74,222,128,0.12)] px-4 py-3 text-[0.78rem] font-extrabold uppercase tracking-[0.12em] text-kc-brand" type="button" onClick={closeMoment}>
                   Close
                 </button>
               </div>
@@ -148,4 +192,16 @@ export function SimplePage({ path }: SimplePageProps) {
       </section>
     </main>
   )
+}
+
+function getFocusableElements(container: HTMLElement | null) {
+  if (!container) {
+    return []
+  }
+
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ),
+  ).filter((element) => !element.hasAttribute('hidden') && element.offsetParent !== null)
 }
