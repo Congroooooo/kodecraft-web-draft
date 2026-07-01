@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { buildItems } from '../content/siteContent'
+import { buildItems } from '../content/home/build'
 import buildImage1 from '../assets/whatWeBuild1.png'
 import buildImage2 from '../assets/whatWeBuild2.png'
 import buildImage3 from '../assets/whatWeBuild3.png'

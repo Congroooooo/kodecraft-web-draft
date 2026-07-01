@@ -58,14 +58,23 @@ export function IntroSection() {
   wordsRef.current = []
 
   return (
-    <section className="intro-section" aria-labelledby="intro-title" ref={sectionRef}>
-      <div className="section-shell intro-scroll">
-        <p className="section-label intro-label">Not a body shop</p>
-        <h2 className="intro-scroll-text" id="intro-title" aria-label={introStatement} ref={textRef}>
+    <section
+      className="relative min-h-svh overflow-clip bg-[#070b14] before:pointer-events-none before:absolute before:inset-0 before:z-0 before:block before:bg-[linear-gradient(90deg,rgba(148,163,184,0.06)_1px,transparent_1px),linear-gradient(180deg,rgba(148,163,184,0.05)_1px,transparent_1px),#070b14] before:bg-[length:25vw_100%,100%_10rem] before:content-['']"
+      aria-labelledby="intro-title"
+      ref={sectionRef}
+    >
+      <div className="relative z-[1] mx-auto grid min-h-svh w-[calc(100%-(var(--page-gutter)*2))] max-w-[var(--container)] content-center pb-[clamp(5rem,9vw,9rem)] pt-[clamp(7rem,12vw,12rem)]">
+        <p className="section-label mb-[clamp(1.4rem,2.5vw,2.5rem)]">Not a body shop</p>
+        <h2
+          className="max-w-[17em] text-[clamp(2.1rem,3.9vw,4.5rem)] font-semibold leading-[1.04] tracking-[-0.05em] text-[rgba(148,163,184,0.26)] max-[680px]:text-[clamp(2.35rem,11vw,4rem)] max-[680px]:leading-[1.02] max-[680px]:tracking-[-0.055em]"
+          id="intro-title"
+          aria-label={introStatement}
+          ref={textRef}
+        >
           {introWords.map((word, index) => (
             <span
               aria-hidden="true"
-              className="intro-word"
+              className="inline text-[rgba(148,163,184,0.26)] will-change-[color]"
               key={`${word}-${index}`}
               ref={(element) => {
                 if (element) {

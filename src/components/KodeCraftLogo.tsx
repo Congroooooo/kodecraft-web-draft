@@ -1,7 +1,7 @@
 export function KodeCraftLogo() {
   return (
     <svg
-      className="kodecraft-logo"
+      className="h-auto w-[clamp(8.5rem,13vw,11.25rem)]"
       width="180"
       height="28"
       viewBox="0 0 180 28"

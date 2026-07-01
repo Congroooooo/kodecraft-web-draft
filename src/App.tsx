@@ -10,7 +10,7 @@ import { IntroSection } from './components/IntroSection'
 import { OurTeamPage } from './components/OurTeamPage'
 import { SimplePage } from './components/SimplePage'
 import { TechStackSection } from './components/TechStackSection'
-import { pageContent } from './content/siteContent'
+import { pageContent } from './content/pages'
 import { useRevealOnScroll } from './hooks/useRevealOnScroll'
 import './App.css'
 

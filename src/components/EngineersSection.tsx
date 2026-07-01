@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { engineerPosts } from '../content/siteContent'
+import { engineerPosts } from '../content/home/engineers'
 import postImage1 from '../assets/imageTrail12.jpg'
 import postImage2 from '../assets/imageTrail27.jpg'
 import postImage3 from '../assets/imageTrail33.jpg'

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import type { TechRoutingCard } from '../content/siteContent'
-import { techRoutingCards } from '../content/siteContent'
+import type { TechRoutingCard } from '../content/home/techStack'
+import { techRoutingCards } from '../content/home/techStack'
 
 // Horizontal route starts (% inside the panel). Chips begin near the top, then
 // curve toward the bucket that owns their category.

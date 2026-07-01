@@ -1,4 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@theme inline {
+  --color-kc-bg: var(--color-bg);
+  --color-kc-surface: var(--color-brand-3);
+  --color-kc-surface-soft: var(--color-brand-4);
+  --color-kc-text: var(--color-text);
+  --color-kc-muted: var(--color-text-alt);
+  --color-kc-brand: var(--color-brand-1);
+  --color-kc-brand-dark: var(--color-brand-2);
+  --font-kc-heading: var(--font-heading);
+  --font-kc-body: var(--font-body);
+  --ease-kc-out: var(--ease-out-expo);
+  --ease-kc-in-out: var(--ease-in-out-expo);
+  --spacing-kc-gutter: var(--page-gutter);
+  --spacing-kc-header: var(--header-height);
+}
 
 :root {
   --rgb-text: 240, 245, 255;
@@ -67,9 +84,11 @@ body {
   color: #07100b;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 button,

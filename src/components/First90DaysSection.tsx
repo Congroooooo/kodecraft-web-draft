@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import firstCardImage from '../assets/1stcard.png'
 import secondCardImage from '../assets/2ndcard.png'
 import thirdCardImage from '../assets/3rdcard.png'
-import { first90DaysItems } from '../content/siteContent'
+import { first90DaysItems } from '../content/home/first90Days'
 
 // Position of each copy block on screen, by step index.
 const COPY_POSITION = ['pos-left', 'pos-right', 'pos-center'] as const
