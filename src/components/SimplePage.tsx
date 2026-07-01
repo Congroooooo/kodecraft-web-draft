@@ -115,9 +115,14 @@ export function SimplePage({ path }: SimplePageProps) {
                   Close
                 </button>
               </div>
-              <div className="grid grid-cols-2 gap-4 max-[680px]:grid-cols-1">
+              <div className="columns-2 gap-4 max-[680px]:columns-1">
                 {selectedMoment.images.map((image, index) => (
-                  <img className="h-auto w-full bg-[rgba(240,245,255,0.06)] object-cover" alt={`${selectedMoment.title} ${index + 1}`} key={image} src={image} />
+                  <img
+                    className="mb-4 block h-auto w-full break-inside-avoid bg-[rgba(240,245,255,0.06)] object-cover"
+                    alt={`${selectedMoment.title} ${index + 1}`}
+                    key={image}
+                    src={image}
+                  />
                 ))}
               </div>
             </div>
