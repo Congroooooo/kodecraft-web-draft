@@ -95,13 +95,13 @@ body {
     color: inherit;
     text-decoration: none;
   }
-}
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
 }
 
 img,

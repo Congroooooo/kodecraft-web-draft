@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { navigationLinks } from '../content/navigation'
 import { KodeCraftLogo } from './KodeCraftLogo'
 
+type HeaderProps = {
+  currentPath: string
+  navigate: (path: string) => void
+}
+
 const topLevelNavItemClasses = [
   'relative font-kc-heading text-[0.76rem] font-bold uppercase tracking-[0.1em]',
   'text-[rgba(240,245,255,0.82)] [text-shadow:0_1px_1.25rem_rgba(7,11,20,0.72)]',
@@ -30,8 +35,7 @@ const mobileNavLinkClasses = [
   'aria-[current=page]:text-kc-text aria-[current=page]:after:origin-left aria-[current=page]:after:scale-x-100',
 ].join(' ')
 
-export function Header() {
-  const currentPath = window.location.pathname
+export function Header({ currentPath, navigate }: HeaderProps) {
   const isHome = currentPath === '/'
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -44,6 +48,17 @@ export function Header() {
 
     return isHome || !href.startsWith('#') ? href : `/${href}`
   }
+
+  const handleNavigate = (href: string) => (event: React.MouseEvent) => {
+    if (href === '#contact') {
+      event.preventDefault()
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    event.preventDefault()
+    navigate(href)
+  }
+
   const isActive = (href: string, children?: Array<{ href: string }>) =>
     currentPath === href || Boolean(children?.some((child) => child.href === currentPath))
 
@@ -143,7 +158,10 @@ export function Header() {
                         aria-current={currentPath === child.href ? 'page' : undefined}
                         href={child.href}
                         key={child.href}
-                        onClick={closeDropdown}
+                        onClick={(event) => {
+                          closeDropdown()
+                          handleNavigate(child.href)(event)
+                        }}
                         role="menuitem"
                         tabIndex={isDropdownOpen ? undefined : -1}
                       >
@@ -161,6 +179,7 @@ export function Header() {
                 aria-current={isActive(link.href) ? 'page' : undefined}
                 href={getHref(link.href)}
                 key={link.href}
+                onClick={handleNavigate(link.href)}
               >
                 {link.label}
               </a>
@@ -171,6 +190,7 @@ export function Header() {
         <a
           className="relative inline-flex items-center overflow-hidden border border-[rgba(74,222,128,0.45)] bg-kc-brand px-[1.15rem] py-[0.9rem] font-kc-heading text-[0.76rem] font-bold uppercase tracking-[0.1em] text-[#07100b] [text-shadow:0_1px_1.25rem_rgba(7,11,20,0.72)] before:pointer-events-none before:absolute before:inset-0 before:-translate-x-[120%] before:bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)] before:content-[''] before:transition-transform before:duration-700 before:ease-kc-out hover:before:translate-x-[120%] focus-visible:before:translate-x-[120%] max-[1024px]:hidden"
           href="#contact"
+          onClick={handleNavigate('#contact')}
         >
           Apply Now
         </a>
@@ -209,7 +229,10 @@ export function Header() {
                       className={mobileNavLinkClasses}
                       aria-current={isActive(link.href, children) ? 'page' : undefined}
                       href={children[0]?.href ?? link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={(event) => {
+                        setIsMobileMenuOpen(false)
+                        handleNavigate(children[0]?.href ?? link.href)(event)
+                      }}
                     >
                       {link.label}
                     </a>
@@ -220,7 +243,10 @@ export function Header() {
                           aria-current={currentPath === child.href ? 'page' : undefined}
                           href={child.href}
                           key={child.href}
-                          onClick={() => setIsMobileMenuOpen(false)}
+                          onClick={(event) => {
+                            setIsMobileMenuOpen(false)
+                            handleNavigate(child.href)(event)
+                          }}
                         >
                           {child.label}
                         </a>
@@ -233,7 +259,10 @@ export function Header() {
                     aria-current={isActive(link.href) ? 'page' : undefined}
                     href={getHref(link.href)}
                     key={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(event) => {
+                      setIsMobileMenuOpen(false)
+                      handleNavigate(link.href)(event)
+                    }}
                   >
                     {link.label}
                   </a>
@@ -247,7 +276,10 @@ export function Header() {
               <a
                 className="relative inline-flex min-h-[3.35rem] items-center justify-center overflow-hidden border border-[rgba(74,222,128,0.45)] bg-kc-brand px-[1.15rem] py-[0.9rem] font-kc-heading text-[0.82rem] font-bold uppercase tracking-[0.1em] text-[#07100b] before:pointer-events-none before:absolute before:inset-0 before:-translate-x-[120%] before:bg-[linear-gradient(120deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)] before:content-[''] before:transition-transform before:duration-700 before:ease-kc-out hover:before:translate-x-[120%] focus-visible:before:translate-x-[120%]"
                 href="#contact"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(event) => {
+                  setIsMobileMenuOpen(false)
+                  handleNavigate('#contact')(event)
+                }}
               >
                 Apply Now
               </a>

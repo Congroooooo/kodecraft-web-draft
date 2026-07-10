@@ -46,13 +46,13 @@ export function HeroSection() {
         muted
         loop
         playsInline
-        aria-hidden="true"
+        preload="auto"
         poster={heroImage}
         ref={videoRef}
         onError={() => setVideoFailed(true)}
-      >
-        <source src="/media/data-flow.webm" type="video/webm" />
-      </video>
+        src="/media/data-flow.webm"
+        aria-hidden="true"
+      />
       {videoFailed ? (
         <img
           className="absolute inset-0 z-0 h-full w-full scale-[1.02] object-cover object-[50%_center] brightness-[0.76] contrast-[1.08] saturate-[0.72] max-[680px]:object-[47%_center]"

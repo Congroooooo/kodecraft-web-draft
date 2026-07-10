@@ -11,18 +11,19 @@ import { OurTeamPage } from './components/OurTeamPage'
 import { SimplePage } from './components/SimplePage'
 import { TechStackSection } from './components/TechStackSection'
 import { pageContent } from './content/pages'
+import { useCurrentPath } from './hooks/useCurrentPath'
 import { useRevealOnScroll } from './hooks/useRevealOnScroll'
 import './App.css'
 
 function App() {
-  useRevealOnScroll()
-  const currentPath = window.location.pathname
+  const { currentPath, navigate } = useCurrentPath()
+  useRevealOnScroll(currentPath)
   const isTeamPage = currentPath === '/our-team'
   const isSimplePage = currentPath in pageContent
 
   return (
     <>
-      <Header />
+      <Header currentPath={currentPath} navigate={navigate} />
 
       {isTeamPage ? (
         <OurTeamPage />

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export function useRevealOnScroll() {
+export function useRevealOnScroll(path: string) {
   useEffect(() => {
     const animatedElements = document.querySelectorAll<HTMLElement>('[data-reveal]')
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -25,5 +25,5 @@ export function useRevealOnScroll() {
     animatedElements.forEach((element) => observer.observe(element))
 
     return () => observer.disconnect()
-  }, [])
+  }, [path])
 }
